@@ -1,0 +1,244 @@
+{
+  "authors": [
+    {
+      "id": 1,
+      "firstName": "Лев",
+      "lastName": "Толстой",
+      "middleName": "Николаевич"
+    },
+    {
+      "id": 2,
+      "firstName": "Федор",
+      "lastName": "Достоевский",
+      "middleName": "Михайлович"
+    },
+    {
+      "id": 3,
+      "firstName": "Иван",
+      "lastName": "Тургенев",
+      "middleName": "Сергеевич"
+    },
+    {
+      "id": 4,
+      "firstName": "Анна",
+      "lastName": "Ахматова",
+      "middleName": "Андреевна"
+    },
+    {
+      "id": 5,
+      "firstName": "Александр",
+      "lastName": "Пушкин",
+      "middleName": "Сергеевич"
+    },
+    {
+      "id": 6,
+      "firstName": "Михаил",
+      "lastName": "Лермонтов",
+      "middleName": "Юрьевич"
+    },
+    {
+      "id": 7,
+      "firstName": "Николай",
+      "lastName": "Гоголь",
+      "middleName": "Васильевич"
+    },
+    {
+      "id": 8,
+      "firstName": "Алексей",
+      "lastName": "Толстой",
+      "middleName": "Николаевич"
+    },
+    {
+      "id": 9,
+      "firstName": "Сергей",
+      "lastName": "Есенин",
+      "middleName": "Александрович"
+    },
+    {
+      "id": 10,
+      "firstName": "Игорь",
+      "lastName": "Северянин",
+      "middleName": "Иосифович"
+    },
+    {
+      "id": 11,
+      "firstName": "Александр",
+      "lastName": "Блок",
+      "middleName": "Александрович"
+    },
+    {
+      "id": 12,
+      "firstName": "Марина",
+      "lastName": "Цветаева",
+      "middleName": "Ивановна"
+    },
+    {
+      "id": 13,
+      "firstName": "Борис",
+      "lastName": "Пастернак",
+      "middleName": "Леонидович"
+    },
+    {
+      "id": 14,
+      "firstName": "Владимир",
+      "lastName": "Маяковский",
+      "middleName": "Владимирович"
+    },
+    {
+      "id": 15,
+      "firstName": "Нина",
+      "lastName": "Берберова",
+      "middleName": "Николаевна"
+    },
+    {
+      "id": 16,
+      "firstName": "Андрей",
+      "lastName": "Белый",
+      "middleName": "Белый"
+    },
+    {
+      "id": 17,
+      "firstName": "Дмитрий",
+      "lastName": "Мережковский",
+      "middleName": "Сергеевич"
+    },
+    {
+      "id": 18,
+      "firstName": "Сергей",
+      "lastName": "Довлатов",
+      "middleName": "Донатович"
+    },
+    {
+      "id": 19,
+      "firstName": "Андрей",
+      "lastName": "Платонов",
+      "middleName": "Платонович"
+    },
+    {
+      "id": 20,
+      "firstName": "Василий",
+      "lastName": "Гроссман",
+      "middleName": "Семенович"
+    },
+    {
+      "id": 21,
+      "firstName": "Александр",
+      "lastName": "Солженицын",
+      "middleName": "Исаевич"
+    },
+    {
+      "id": 22,
+      "firstName": "Иван",
+      "lastName": "Бунин",
+      "middleName": "Александрович"
+    },
+    {
+      "id": 23,
+      "firstName": "Николай",
+      "lastName": "Некрасов",
+      "middleName": "Александрович"
+    },
+    {
+      "id": 24,
+      "firstName": "Андрей",
+      "lastName": "Курбский",
+      "middleName": "Андреевич"
+    },
+    {
+      "id": 25,
+      "firstName": "Константин",
+      "lastName": "Бальмонт",
+      "middleName": "Дмитриевич"
+    },
+    {
+      "id": 26,
+      "firstName": "Анатолий",
+      "lastName": "Рыбаков",
+      "middleName": "Иванович"
+    },
+    {
+      "id": 27,
+      "firstName": "Владимир",
+      "lastName": "Даль",
+      "middleName": "Иванович"
+    },
+    {
+      "id": 28,
+      "firstName": "Аркадий",
+      "lastName": "Стругацкий",
+      "middleName": "Натанович"
+    },
+    {
+      "id": 29,
+      "firstName": "Борис",
+      "lastName": "Стругацкий",
+      "middleName": "Натанович"
+    },
+    {
+      "id": 30,
+      "firstName": "Иван",
+      "lastName": "Буни",
+      "middleName": "Петрович"
+    },
+    {
+      "id": 31,
+      "firstName": "Валентин",
+      "lastName": "Распутин",
+      "middleName": "Григорьевич"
+    },
+    {
+      "id": 32,
+      "firstName": "Андрей",
+      "lastName": "Платонов",
+      "middleName": "Константинович"
+    },
+    {
+      "id": 33,
+      "firstName": "Василий",
+      "lastName": "Шукшин",
+      "middleName": "Макарович"
+    },
+    {
+      "id": 34,
+      "firstName": "Дмитрий",
+      "lastName": "Глуховский",
+      "middleName": "Александрович"
+    },
+    {
+      "id": 35,
+      "firstName": "Евгений",
+      "lastName": "Гришковец",
+      "middleName": null
+    },
+    {
+      "id": 36,
+      "firstName": "Дина",
+      "lastName": "Рубина",
+      "middleName": "Васильевна"
+    },
+    {
+      "id": 37,
+      "firstName": "Михаил",
+      "lastName": "Шолохов",
+      "middleName": "Александрович"
+    },
+    {
+      "id": 38,
+      "firstName": "Виктор",
+      "lastName": "Пелевин",
+      "middleName": null
+    },
+    {
+      "id": 39,
+      "firstName": "Елена",
+      "lastName": "Шварц",
+      "middleName": "Семеновна"
+    },
+    {
+      "id": 40,
+      "firstName": "Анна",
+      "lastName": "Ахматова",
+      "middleName": "Андреевна"
+    }
+  ]
+}
