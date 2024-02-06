@@ -1,34 +1,50 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import getAllAuthors from "api/getAllAuthors";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getAllAuthors, deleteAuthorById, editAuthor } from "api/authors";
 import { sleep } from "utils/functions";
-import { Author } from "types";
 
 function useAuthors() {
-  const [deletedId, setDeletedId] = useState<number[]>([]);
+  const client = useQueryClient();
 
   const {
     data: authors,
     isError,
     isLoading,
+    isFetching,
   } = useQuery({
     queryKey: ["authors"],
     queryFn: async () => {
       // simulate deley for receiving data
-      await sleep(1000);
+      await sleep(700);
       return getAllAuthors();
     },
-    select: (data) => data.filter((a) => !deletedId.includes(a.id)),
   });
 
-  const deleteAuthorById = (id: number) => {
-    if (deletedId.includes(id)) return;
-    setDeletedId((di) => [...di, id]);
+  const { mutateAsync: deleteAuthorByIdMutation } = useMutation({
+    mutationKey: ["authors"],
+    mutationFn: deleteAuthorById,
+    onSuccess: () => {
+      sleep(500);
+      client.invalidateQueries({ queryKey: ["authors"] });
+    },
+  });
+
+  const { mutateAsync: editAuthorMutation } = useMutation({
+    mutationKey: ["authors"],
+    mutationFn: editAuthor,
+    onSuccess: () => {
+      sleep(500);
+      client.invalidateQueries({ queryKey: ["authors"] });
+    },
+  });
+
+  return {
+    authors,
+    isError,
+    isLoading,
+    deleteAuthorByIdMutation,
+    isFetching,
+    editAuthorMutation,
   };
-
-  const addNewAuthor = () => {};
-
-  return { authors, isError, isLoading, deleteAuthorById, addNewAuthor };
 }
 
 export default useAuthors;

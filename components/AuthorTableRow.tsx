@@ -7,6 +7,7 @@ type AuthorTableRowProps = {
   isLabel?: boolean;
   onPress: () => void;
   onDelete: () => void;
+  onEdit: () => void;
 } & Omit<Author, "id">;
 
 const AuthorTableRow: FC<AuthorTableRowProps> = ({
@@ -15,6 +16,7 @@ const AuthorTableRow: FC<AuthorTableRowProps> = ({
   middleName,
   onPress,
   onDelete,
+  onEdit,
   isLabel = false,
 }) => {
   const textStyle = isLabel ? styles.labelText : styles.text;
@@ -49,7 +51,7 @@ const AuthorTableRow: FC<AuthorTableRowProps> = ({
         >
           {!isLabel && (
             <>
-              <Pressable onPress={() => console.log("edit: ", middleName)}>
+              <Pressable onPress={onEdit}>
                 <EvilIcons name="pencil" size={24} color="black" />
               </Pressable>
               <Pressable onPress={onDelete}>
