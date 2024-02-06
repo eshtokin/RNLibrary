@@ -1,27 +1,34 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Author } from "../types";
-
-async function getAllAuthors(): Promise<Author[]> {
-  return new Promise((resolve, reject) => {
-    try {
-      const { authors } = require("../data/authors.json");
-      resolve(authors);
-    } catch (e) {
-      reject(e);
-    }
-  });
-}
+import getAllAuthors from "api/getAllAuthors";
+import { sleep } from "utils/functions";
+import { Author } from "types";
 
 function useAuthors() {
+  const [deletedId, setDeletedId] = useState<number[]>([]);
+
   const {
     data: authors,
     isError,
     isLoading,
   } = useQuery({
     queryKey: ["authors"],
-    queryFn: getAllAuthors,
+    queryFn: async () => {
+      // simulate deley for receiving data
+      await sleep(1000);
+      return getAllAuthors();
+    },
+    select: (data) => data.filter((a) => !deletedId.includes(a.id)),
   });
-  return { authors, isError, isLoading };
+
+  const deleteAuthorById = (id: number) => {
+    if (deletedId.includes(id)) return;
+    setDeletedId((di) => [...di, id]);
+  };
+
+  const addNewAuthor = () => {};
+
+  return { authors, isError, isLoading, deleteAuthorById, addNewAuthor };
 }
 
 export default useAuthors;

@@ -1,20 +1,25 @@
 import React, { FC } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Author } from "../types";
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import { EvilIcons } from "@expo/vector-icons";
+import { Author } from "types";
 
 type AuthorTableRowProps = {
   isLabel?: boolean;
+  onPress: () => void;
+  onDelete: () => void;
 } & Omit<Author, "id">;
 
 const AuthorTableRow: FC<AuthorTableRowProps> = ({
   firstName,
   lastName,
   middleName,
+  onPress,
+  onDelete,
   isLabel = false,
 }) => {
   const textStyle = isLabel ? styles.labelText : styles.text;
   return (
-    <View style={styles.row}>
+    <Pressable style={styles.row} onPress={onPress}>
       <View style={styles.cell}>
         <Text style={textStyle} numberOfLines={1}>
           {lastName}
@@ -30,7 +35,31 @@ const AuthorTableRow: FC<AuthorTableRowProps> = ({
           {middleName}
         </Text>
       </View>
-    </View>
+      <View
+        style={{
+          flexDirection: "row",
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            width: 60,
+            gap: 10,
+          }}
+        >
+          {!isLabel && (
+            <>
+              <Pressable onPress={() => console.log("edit: ", middleName)}>
+                <EvilIcons name="pencil" size={24} color="black" />
+              </Pressable>
+              <Pressable onPress={onDelete}>
+                <EvilIcons name="trash" size={24} color="black" />
+              </Pressable>
+            </>
+          )}
+        </View>
+      </View>
+    </Pressable>
   );
 };
 

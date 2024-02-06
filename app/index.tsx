@@ -1,36 +1,82 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
-import useAuthors from "../hooks/useAuthors";
-import AuthorTableRow from "../components/AuthorTableRow";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Pressable,
+  LayoutAnimation,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import useAuthors from "hooks/useAuthors";
+import AuthorTableRow from "components/AuthorTableRow";
 
 const AuthorsList = () => {
-  const { authors, isLoading, isError } = useAuthors();
+  const { authors, isLoading, isError, deleteAuthorById } = useAuthors();
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <Text style={styles.heading}>Loading...</Text>
+      </View>
+    );
   }
 
   if (isError) {
-    return <Text>Error loading authors</Text>;
+    return (
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <Text style={styles.heading}>Error loading authors</Text>
+      </View>
+    );
   }
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <View style={{ paddingHorizontal: 16 }}>
-        <Text style={styles.heading}>Authors</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.heading}>Авторы</Text>
+          <Pressable onPress={() => {}}>
+            <Text>Добавить</Text>
+          </Pressable>
+        </View>
         <AuthorTableRow
           isLabel
-          firstName="Name"
-          lastName="Sername"
-          middleName="Middle"
+          firstName="Имя"
+          lastName="Фамилия"
+          middleName="Отчество"
+          onPress={() => {}}
+          onDelete={() => {}}
         />
       </View>
       <FlatList
         data={authors}
         keyExtractor={(item) => item.id.toString()}
-        ListHeaderComponentStyle={{}}
-        renderItem={({ item }) => <AuthorTableRow {...item} />}
+        renderItem={({ item }) => (
+          <AuthorTableRow
+            {...item}
+            onPress={() => {}}
+            onDelete={() => {
+              LayoutAnimation.easeInEaseOut();
+              deleteAuthorById(item.id);
+            }}
+          />
+        )}
         contentContainerStyle={{
           paddingBottom: 32,
           paddingHorizontal: 16,

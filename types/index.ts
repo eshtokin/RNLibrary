@@ -2,7 +2,7 @@ export type Author = {
   id: number;
   firstName: string;
   lastName: string;
-  middleName?: string | null;
+  middleName?: string;
 };
 
 export type Book = {
@@ -10,5 +10,5 @@ export type Book = {
   title: string;
   author: Author;
   publisher: string;
-  year: number | null;
+  year: number;
 };
