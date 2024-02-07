@@ -15,3 +15,11 @@ export async function editAuthor(author: Author) {
     return a.id === author.id ? author : a;
   });
 }
+
+export async function getSortedAuthors(sortBy: keyof Author) {
+  authors.sort((a, b) => {
+    if (a[sortBy]! < b[sortBy]!) return -1;
+    if (a[sortBy]! > b[sortBy]!) return 1;
+    return 0;
+  });
+}

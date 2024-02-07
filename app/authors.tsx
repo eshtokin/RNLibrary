@@ -8,7 +8,7 @@ import {
   LayoutAnimation,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import useAuthors from "hooks/useAuthors";
+import useAuthors, { SortAuthorsByOptionType } from "hooks/useAuthors";
 import AuthorTableRow from "components/AuthorTableRow";
 import { Author } from "types";
 import LoadingView from "components/LoadingView";
@@ -23,6 +23,7 @@ const AuthorsList = () => {
     deleteAuthorByIdMutation,
     isFetching,
     editAuthorMutation,
+    sortAuthorsBy,
   } = useAuthors();
 
   const [isEditModalVisible, setIsModalVisible] = useState(false);
@@ -35,6 +36,12 @@ const AuthorsList = () => {
   if (isError) {
     return <ErrorView />;
   }
+
+  const options: { label: string; value: SortAuthorsByOptionType }[] =
+    Object.keys(authors![0]).map((k) => ({
+      label: k,
+      value: k as keyof Author,
+    }));
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>

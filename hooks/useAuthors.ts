@@ -1,6 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getAllAuthors, deleteAuthorById, editAuthor } from "api/authors";
+import {
+  getAllAuthors,
+  deleteAuthorById,
+  editAuthor,
+  getSortedAuthors,
+} from "api/authors";
+import { Author } from "types";
 import { sleep } from "utils/functions";
+
+export type SortAuthorsByOptionType = keyof Author;
+
+const QUERY_KEY_AUTHORS = "authors";
 
 function useAuthors() {
   const client = useQueryClient();
@@ -11,7 +21,7 @@ function useAuthors() {
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: ["authors"],
+    queryKey: [QUERY_KEY_AUTHORS],
     queryFn: async () => {
       // simulate deley for receiving data
       await sleep(700);
@@ -19,22 +29,28 @@ function useAuthors() {
     },
   });
 
+  const invalidateQueriesWithDelay = () => {
+    // simulate deley for receiving data
+    sleep(500);
+    client.invalidateQueries({ queryKey: [QUERY_KEY_AUTHORS] });
+  };
+
   const { mutateAsync: deleteAuthorByIdMutation } = useMutation({
-    mutationKey: ["authors"],
+    mutationKey: [QUERY_KEY_AUTHORS],
     mutationFn: deleteAuthorById,
-    onSuccess: () => {
-      sleep(500);
-      client.invalidateQueries({ queryKey: ["authors"] });
-    },
+    onSuccess: invalidateQueriesWithDelay,
   });
 
   const { mutateAsync: editAuthorMutation } = useMutation({
-    mutationKey: ["authors"],
+    mutationKey: [QUERY_KEY_AUTHORS],
     mutationFn: editAuthor,
-    onSuccess: () => {
-      sleep(500);
-      client.invalidateQueries({ queryKey: ["authors"] });
-    },
+    onSuccess: invalidateQueriesWithDelay,
+  });
+
+  const { mutateAsync: sortAuthorsBy } = useMutation({
+    mutationKey: [QUERY_KEY_AUTHORS],
+    mutationFn: getSortedAuthors,
+    onSuccess: invalidateQueriesWithDelay,
   });
 
   return {
@@ -44,6 +60,7 @@ function useAuthors() {
     deleteAuthorByIdMutation,
     isFetching,
     editAuthorMutation,
+    sortAuthorsBy,
   };
 }
 
