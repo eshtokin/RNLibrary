@@ -23,3 +23,8 @@ export async function getSortedAuthors(sortBy: keyof Author) {
     return 0;
   });
 }
+
+export async function createAuthor(author: Omit<Author, "id">) {
+  const newId = new Date().getTime();
+  authors.push({ id: newId, ...author });
+}

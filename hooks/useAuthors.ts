@@ -4,6 +4,7 @@ import {
   deleteAuthorById,
   editAuthor,
   getSortedAuthors,
+  createAuthor,
 } from "api/authors";
 import { Author } from "types";
 import { sleep } from "utils/functions";
@@ -46,9 +47,15 @@ function useAuthors() {
     onSuccess: invalidateQueriesWithDelay,
   });
 
-  const { mutateAsync: sortAuthorsBy } = useMutation({
+  const { mutateAsync: sortAuthorsMutation } = useMutation({
     mutationKey: [QUERY_KEY_AUTHORS],
     mutationFn: getSortedAuthors,
+    onSuccess: invalidateQueriesWithDelay,
+  });
+
+  const { mutateAsync: createAuthorMutation } = useMutation({
+    mutationKey: [QUERY_KEY_AUTHORS],
+    mutationFn: createAuthor,
     onSuccess: invalidateQueriesWithDelay,
   });
 
@@ -58,7 +65,8 @@ function useAuthors() {
     isLoading,
     deleteAuthorByIdMutation,
     editAuthorMutation,
-    sortAuthorsBy,
+    createAuthorMutation,
+    sortAuthorsMutation,
   };
 }
 

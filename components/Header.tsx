@@ -1,17 +1,27 @@
 import { FC } from "react";
-import { Pressable, View, Text, StyleSheet } from "react-native";
+import {
+  Pressable,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 
 type HeaderProps = {
   title: string;
   rightActionLabel: string;
   onRightActionPress: () => void;
 };
-const Header: FC<HeaderProps> = ({ title, rightActionLabel }) => (
+const Header: FC<HeaderProps> = ({
+  title,
+  rightActionLabel,
+  onRightActionPress,
+}) => (
   <View style={styles.header}>
     <Text style={styles.heading}>{title}</Text>
-    <Pressable onPress={() => {}}>
+    <TouchableOpacity onPress={onRightActionPress}>
       <Text>{rightActionLabel}</Text>
-    </Pressable>
+    </TouchableOpacity>
   </View>
 );
 

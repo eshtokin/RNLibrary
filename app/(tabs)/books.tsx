@@ -36,7 +36,7 @@ const BookListScreen = () => {
         sortByOptions={options}
         handleSortBy={sortBooksBy}
       />
-      <BookList books={books} />
+      <BookList books={books} editBook={() => {}} deleteBook={() => {}} />
     </SafeAreaView>
   );
 };

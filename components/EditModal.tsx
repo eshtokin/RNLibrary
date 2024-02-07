@@ -1,6 +1,8 @@
 import React from "react";
-import { View, TextInput, Button, Modal, StyleSheet } from "react-native";
+import { TextInput } from "react-native";
 import { Author } from "types";
+import ModalActionButtons from "./ModalActionButtons";
+import { SlideModal } from "./SlideModal";
 
 interface EditModalProps {
   isEditModalVisible: boolean;
@@ -17,61 +19,37 @@ const EditModal: React.FC<EditModalProps> = ({
   setSelectedAuthor,
   editAuthorMutation,
 }) => (
-  <Modal transparent animationType="slide" visible={isEditModalVisible}>
-    <View style={styles.modalContainer}>
-      <TextInput
-        placeholder={selectedAuthor?.firstName}
-        onChangeText={(value: string) => {
-          if (!selectedAuthor) return;
-          setSelectedAuthor({ ...selectedAuthor, firstName: value });
-        }}
-      />
-      <TextInput
-        placeholder={selectedAuthor?.lastName}
-        onChangeText={(value: string) => {
-          if (!selectedAuthor) return;
-          setSelectedAuthor({ ...selectedAuthor, lastName: value });
-        }}
-      />
-      <TextInput
-        placeholder={selectedAuthor?.middleName}
-        onChangeText={(value: string) => {
-          if (!selectedAuthor) return;
-          setSelectedAuthor({ ...selectedAuthor, middleName: value });
-        }}
-      />
-      <View style={styles.modalButtons}>
-        <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
-        <Button
-          title="OK"
-          onPress={() => {
-            if (!selectedAuthor) return;
-            setIsModalVisible(false);
-            editAuthorMutation({ ...selectedAuthor });
-          }}
-        />
-      </View>
-    </View>
-  </Modal>
+  <SlideModal visible={isEditModalVisible}>
+    <TextInput
+      placeholder={selectedAuthor?.firstName}
+      onChangeText={(value: string) => {
+        if (!selectedAuthor) return;
+        setSelectedAuthor({ ...selectedAuthor, firstName: value });
+      }}
+    />
+    <TextInput
+      placeholder={selectedAuthor?.lastName}
+      onChangeText={(value: string) => {
+        if (!selectedAuthor) return;
+        setSelectedAuthor({ ...selectedAuthor, lastName: value });
+      }}
+    />
+    <TextInput
+      placeholder={selectedAuthor?.middleName}
+      onChangeText={(value: string) => {
+        if (!selectedAuthor) return;
+        setSelectedAuthor({ ...selectedAuthor, middleName: value });
+      }}
+    />
+    <ModalActionButtons
+      onCancelPress={() => setIsModalVisible(false)}
+      onConfirmPress={() => {
+        if (!selectedAuthor) return;
+        setIsModalVisible(false);
+        editAuthorMutation({ ...selectedAuthor });
+      }}
+    />
+  </SlideModal>
 );
-
-const styles = StyleSheet.create({
-  modalContainer: {
-    padding: 40,
-    gap: 16,
-    width: "100%",
-    backgroundColor: "white",
-    borderTopRightRadius: 18,
-    borderTopLeftRadius: 18,
-    position: "absolute",
-    bottom: 0,
-    borderTopEndRadius: 30,
-    borderTopStartRadius: 30,
-  },
-  modalButtons: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-});
 
 export default EditModal;

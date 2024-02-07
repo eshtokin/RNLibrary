@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, LayoutAnimation } from "react-native";
+import { View, StyleSheet, LayoutAnimation, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useAuthors, { SortAuthorsByOptionType } from "hooks/useAuthors";
 import { Author } from "types";
@@ -11,6 +11,7 @@ import {
   AuthorList,
   Header,
 } from "components";
+import CreateAuthorModal from "components/CreateAuthorModal";
 
 const AuthorsScreen = () => {
   const {
@@ -19,11 +20,13 @@ const AuthorsScreen = () => {
     isError,
     deleteAuthorByIdMutation,
     editAuthorMutation,
-    sortAuthorsBy,
+    sortAuthorsMutation,
   } = useAuthors();
 
-  const [isEditModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedAuthor, setSelectedAuthor] = useState<Author>();
+  const [newAuthor, setNewAuthor] = useState<Author>();
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
   if (isLoading) {
     return <LoadingView />;
@@ -40,10 +43,24 @@ const AuthorsScreen = () => {
 
   const editAuthor = (author: Author) => {
     setSelectedAuthor(author);
-    setIsModalVisible(true);
+    setIsEditModalVisible(true);
   };
 
-  const addAuthor = () => {};
+  const addAuthor = () => {
+    setIsCreateModalVisible(true);
+    setNewAuthor({
+      id: new Date().getTime(),
+      firstName: "",
+      lastName: "",
+      middleName: "",
+    });
+
+    // createAuthorMutation({
+    //   firstName: "Aleksey",
+    //   lastName: "Yeshtokin",
+    //   middleName: "Aleksandrovich",
+    // });
+  };
 
   // generate options for filter based on author's keys
   const options: { label: string; value: SortAuthorsByOptionType }[] =
@@ -63,7 +80,7 @@ const AuthorsScreen = () => {
         {/* Specify what type we use for filter */}
         <Filter<SortAuthorsByOptionType>
           sortByOptions={options}
-          handleSortBy={sortAuthorsBy}
+          handleSortBy={sortAuthorsMutation}
         />
       </View>
       <AuthorList
@@ -73,10 +90,15 @@ const AuthorsScreen = () => {
       />
       <EditModal
         isEditModalVisible={isEditModalVisible}
-        setIsModalVisible={setIsModalVisible}
+        setIsModalVisible={setIsEditModalVisible}
         selectedAuthor={selectedAuthor}
         setSelectedAuthor={setSelectedAuthor}
         editAuthorMutation={editAuthorMutation}
+      />
+      <CreateAuthorModal
+        visible={isCreateModalVisible}
+        newAuthor={newAuthor}
+        setNewAuthor={setNewAuthor}
       />
     </SafeAreaView>
   );
