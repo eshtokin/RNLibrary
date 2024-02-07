@@ -45,7 +45,7 @@ const AuthorsScreen = () => {
 
   const addAuthor = () => {};
 
-  // generate options for filter based on author
+  // generate options for filter based on author's keys
   const options: { label: string; value: SortAuthorsByOptionType }[] =
     Object.keys(authors![0]).map((k) => ({
       label: k,
