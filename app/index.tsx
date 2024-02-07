@@ -3,12 +3,14 @@ import { View, StyleSheet, LayoutAnimation } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useAuthors, { SortAuthorsByOptionType } from "hooks/useAuthors";
 import { Author } from "types";
-import LoadingView from "components/LoadingView";
-import ErrorView from "components/ErrorView";
-import EditModal from "components/EditModal";
-import Filter from "components/Filter";
-import AuthorList from "components/AuthorList";
-import Header from "components/Header";
+import {
+  LoadingView,
+  ErrorView,
+  EditModal,
+  Filter,
+  AuthorList,
+  Header,
+} from "components";
 
 const AuthorsScreen = () => {
   const {
