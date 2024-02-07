@@ -1,191 +1,83 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  Pressable,
-  LayoutAnimation,
-  Modal,
-  TextInput,
-  Button,
-} from "react-native";
+import React, { FC } from "react";
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import { Book } from "types";
+import useBooks, { SortByOptions } from "hooks/useBooks";
 import { SafeAreaView } from "react-native-safe-area-context";
-import useAuthors from "hooks/useAuthors";
-import AuthorTableRow from "components/AuthorTableRow";
-import { Author } from "types";
+import Filter from "components/Filter";
+import LoadingView from "components/LoadingView";
+import ErrorView from "components/ErrorView";
 
-const AuthorsList = () => {
-  const {
-    authors,
-    isLoading,
-    isError,
-    deleteAuthorByIdMutation,
-    isFetching,
-    editAuthorMutation,
-  } = useAuthors();
-
-  const [isEditModalVisible, setIsModalVisible] = useState(false);
-  const [selectedAuthor, setSelectedAuthor] = useState<Author>();
+const BookListScreen = () => {
+  const { books, isLoading, isError, sortBooksBy } = useBooks();
 
   if (isLoading) {
-    return (
-      <View
-        style={[
-          styles.container,
-          { justifyContent: "center", alignItems: "center" },
-        ]}
-      >
-        <Text style={styles.heading}>Loading...</Text>
-      </View>
-    );
+    return <LoadingView />;
   }
 
   if (isError) {
-    return (
-      <View
-        style={[
-          styles.container,
-          { justifyContent: "center", alignItems: "center" },
-        ]}
-      >
-        <Text style={styles.heading}>Error loading authors</Text>
-      </View>
-    );
+    return <ErrorView />;
   }
 
-  return (
-    <>
-      <SafeAreaView style={styles.container} edges={["top"]}>
-        {isFetching && (
-          <View
-            style={[
-              StyleSheet.absoluteFillObject,
-              {
-                backgroundColor: "rgba(0, 100, 0, 0.8)",
-                justifyContent: "center",
-                alignItems: "center",
-              },
-            ]}
-          >
-            <Text style={[styles.heading, { color: "white" }]}>
-              Loading....
-            </Text>
-          </View>
-        )}
-        <View style={{ paddingHorizontal: 16 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Text style={styles.heading}>Авторы</Text>
-            <Pressable onPress={() => {}}>
-              <Text>Добавить</Text>
-            </Pressable>
-          </View>
-          <AuthorTableRow
-            isLabel
-            firstName="Имя"
-            lastName="Фамилия"
-            middleName="Отчество"
-            onPress={() => {}}
-            onDelete={() => {}}
-            onEdit={() => {}}
-          />
-        </View>
-        <FlatList
-          data={authors}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <AuthorTableRow
-              {...item}
-              onPress={() => {}}
-              onDelete={() => {
-                LayoutAnimation.easeInEaseOut();
-                deleteAuthorByIdMutation(item.id);
-              }}
-              onEdit={() => {
-                setSelectedAuthor(item);
-                setIsModalVisible(true);
-              }}
-            />
-          )}
-          contentContainerStyle={{
-            paddingBottom: 32,
-            paddingHorizontal: 16,
-          }}
-        />
-      </SafeAreaView>
+  const options: { label: string; value: SortByOptions }[] = Object.keys(
+    books![0]
+  ).map((k) => ({
+    label: k,
+    value: k as keyof Book,
+  }));
 
-      <Modal transparent animationType="slide" visible={isEditModalVisible}>
-        <View
-          style={{
-            padding: 40,
-            gap: 16,
-            width: "100%",
-            backgroundColor: "white",
-            borderTopRightRadius: 18,
-            borderTopLeftRadius: 18,
-            position: "absolute",
-            bottom: 0,
-            borderTopEndRadius: 30,
-            borderTopStartRadius: 30,
-          }}
-        >
-          <TextInput
-            placeholder={selectedAuthor?.firstName}
-            onChangeText={(value: string) => {
-              if (!selectedAuthor) return;
-              setSelectedAuthor({ ...selectedAuthor, firstName: value });
-            }}
-          />
-          <TextInput
-            placeholder={selectedAuthor?.lastName}
-            onChangeText={(value: string) => {
-              if (!selectedAuthor) return;
-              setSelectedAuthor({ ...selectedAuthor, lastName: value });
-            }}
-          />
-          <TextInput
-            placeholder={selectedAuthor?.middleName}
-            onChangeText={(value: string) => {
-              if (!selectedAuthor) return;
-              setSelectedAuthor({ ...selectedAuthor, middleName: value });
-            }}
-          />
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-around" }}
-          >
-            <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
-            <Button
-              title="OK"
-              onPress={() => {
-                if (!selectedAuthor) return;
-                setIsModalVisible(false);
-                editAuthorMutation({ ...selectedAuthor });
-              }}
-            />
-          </View>
-        </View>
-      </Modal>
-    </>
+  return (
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <Filter sortByOptions={options} handleSortBy={sortBooksBy} />
+      <FlatList
+        data={books}
+        renderItem={({ item }) => <BookItem {...item} />}
+        keyExtractor={(item) => item.id.toString()}
+      />
+    </SafeAreaView>
   );
 };
+
+const BookItem: FC<Book> = ({ title, author, publisher, year }) => (
+  <View style={styles.itemContainer}>
+    <Text style={styles.title}>Название: {title}</Text>
+    <Text style={styles.author}>Автор: {author}</Text>
+    <Text style={styles.publisher}>Издательство: {publisher}</Text>
+    <Text style={styles.year}>Год: {year}</Text>
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 22,
+    backgroundColor: "#f0f0f0",
   },
-  heading: {
-    fontSize: 25,
+  itemContainer: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+  },
+  title: {
+    fontSize: 18,
     fontWeight: "bold",
+    marginBottom: 5,
+    color: "#333",
   },
-  authorItem: {
-    marginBottom: 8,
+  author: {
+    fontSize: 16,
+    marginBottom: 3,
+    color: "#555",
+  },
+  publisher: {
+    fontSize: 16,
+    marginBottom: 3,
+    color: "#555",
+  },
+  year: {
+    fontSize: 16,
+    marginBottom: 3,
+    color: "#555",
   },
 });
 
-export default AuthorsList;
+export default BookListScreen;
