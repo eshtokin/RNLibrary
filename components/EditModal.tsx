@@ -4,8 +4,8 @@ import { Author } from "types";
 
 interface EditModalProps {
   isEditModalVisible: boolean;
-  setIsModalVisible: (visible: boolean) => void;
   selectedAuthor?: Author;
+  setIsModalVisible: (visible: boolean) => void;
   setSelectedAuthor: (author?: Author) => void;
   editAuthorMutation: (author: Author) => void;
 }

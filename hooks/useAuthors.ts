@@ -19,7 +19,6 @@ function useAuthors() {
     data: authors,
     isError,
     isLoading,
-    isFetching,
   } = useQuery({
     queryKey: [QUERY_KEY_AUTHORS],
     queryFn: async () => {
@@ -58,7 +57,6 @@ function useAuthors() {
     isError,
     isLoading,
     deleteAuthorByIdMutation,
-    isFetching,
     editAuthorMutation,
     sortAuthorsBy,
   };

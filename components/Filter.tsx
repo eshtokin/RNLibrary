@@ -1,4 +1,3 @@
-import { SortByOptions } from "hooks/useBooks";
 import React from "react";
 import {
   View,
@@ -8,19 +7,22 @@ import {
   ScrollView,
 } from "react-native";
 
-type FilterProps = {
-  sortByOptions: { label: string; value: SortByOptions }[];
-  handleSortBy: (property: SortByOptions) => void;
+type FilterProps<T> = {
+  sortByOptions: {
+    label: string;
+    value: T;
+  }[];
+  handleSortBy: (property: T) => void;
 };
 
-const Filter: React.FC<FilterProps> = ({ sortByOptions, handleSortBy }) => {
+const Filter = <T,>({ sortByOptions, handleSortBy }: FilterProps<T>) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Сортировать по:</Text>
-      <ScrollView horizontal style={{}} contentContainerStyle={{ gap: 16 }}>
+      <ScrollView horizontal contentContainerStyle={styles.scrollContent}>
         {sortByOptions.map((option) => (
           <TouchableOpacity
-            key={option.value}
+            key={String(option.value)}
             style={styles.button}
             onPress={() => handleSortBy(option.value)}
           >
@@ -35,10 +37,12 @@ const Filter: React.FC<FilterProps> = ({ sortByOptions, handleSortBy }) => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
+    gap: 10,
     paddingVertical: 10,
     backgroundColor: "#f0f0f0",
+  },
+  scrollContent: {
+    gap: 16,
   },
   label: {
     fontSize: 16,

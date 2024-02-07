@@ -1,14 +1,27 @@
-import React, { FC } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
-import { Book } from "types";
-import useBooks, { SortByOptions } from "hooks/useBooks";
+import React, { useState } from "react";
+import { View, StyleSheet, LayoutAnimation } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Filter from "components/Filter";
+import useAuthors, { SortAuthorsByOptionType } from "hooks/useAuthors";
+import { Author } from "types";
 import LoadingView from "components/LoadingView";
 import ErrorView from "components/ErrorView";
+import EditModal from "components/EditModal";
+import Filter from "components/Filter";
+import AuthorList from "components/AuthorList";
+import Header from "components/Header";
 
-const BookListScreen = () => {
-  const { books, isLoading, isError, sortBooksBy } = useBooks();
+const AuthorsScreen = () => {
+  const {
+    authors,
+    isLoading,
+    isError,
+    deleteAuthorByIdMutation,
+    editAuthorMutation,
+    sortAuthorsBy,
+  } = useAuthors();
+
+  const [isEditModalVisible, setIsModalVisible] = useState(false);
+  const [selectedAuthor, setSelectedAuthor] = useState<Author>();
 
   if (isLoading) {
     return <LoadingView />;
@@ -18,66 +31,65 @@ const BookListScreen = () => {
     return <ErrorView />;
   }
 
-  const options: { label: string; value: SortByOptions }[] = Object.keys(
-    books![0]
-  ).map((k) => ({
-    label: k,
-    value: k as keyof Book,
-  }));
+  const deleteAuthor = (id: number) => {
+    LayoutAnimation.easeInEaseOut();
+    deleteAuthorByIdMutation(id);
+  };
+
+  const editAuthor = (author: Author) => {
+    setSelectedAuthor(author);
+    setIsModalVisible(true);
+  };
+
+  const addAuthor = () => {};
+
+  // generate options for filter based on author
+  const options: { label: string; value: SortAuthorsByOptionType }[] =
+    Object.keys(authors![0]).map((k) => ({
+      label: k,
+      value: k as keyof Author,
+    }));
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
-      <Filter sortByOptions={options} handleSortBy={sortBooksBy} />
-      <FlatList
-        data={books}
-        renderItem={({ item }) => <BookItem {...item} />}
-        keyExtractor={(item) => item.id.toString()}
+      <View style={styles.contentContainer}>
+        <Header
+          title={"Авторы"}
+          rightActionLabel={"Добавить"}
+          onRightActionPress={addAuthor}
+        />
+        {/* Specify what type we use for filter */}
+        <Filter<SortAuthorsByOptionType>
+          sortByOptions={options}
+          handleSortBy={sortAuthorsBy}
+        />
+      </View>
+      <AuthorList
+        authors={authors}
+        deleteAuthor={deleteAuthor}
+        editAuthor={editAuthor}
+      />
+      <EditModal
+        isEditModalVisible={isEditModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        selectedAuthor={selectedAuthor}
+        setSelectedAuthor={setSelectedAuthor}
+        editAuthorMutation={editAuthorMutation}
       />
     </SafeAreaView>
   );
 };
 
-const BookItem: FC<Book> = ({ title, author, publisher, year }) => (
-  <View style={styles.itemContainer}>
-    <Text style={styles.title}>Название: {title}</Text>
-    <Text style={styles.author}>Автор: {author}</Text>
-    <Text style={styles.publisher}>Издательство: {publisher}</Text>
-    <Text style={styles.year}>Год: {year}</Text>
-  </View>
-);
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
-    backgroundColor: "#f0f0f0",
   },
-  itemContainer: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+  absoluteFill: {
+    ...StyleSheet.absoluteFillObject,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 5,
-    color: "#333",
-  },
-  author: {
-    fontSize: 16,
-    marginBottom: 3,
-    color: "#555",
-  },
-  publisher: {
-    fontSize: 16,
-    marginBottom: 3,
-    color: "#555",
-  },
-  year: {
-    fontSize: 16,
-    marginBottom: 3,
-    color: "#555",
+  contentContainer: {
+    paddingHorizontal: 16,
   },
 });
 
-export default BookListScreen;
+export default AuthorsScreen;
