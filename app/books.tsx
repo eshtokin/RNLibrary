@@ -2,9 +2,7 @@ import React, { FC } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useBooks, { SortByOptions } from "hooks/useBooks";
-import Filter from "components/Filter";
-import LoadingView from "components/LoadingView";
-import ErrorView from "components/ErrorView";
+import { Filter, LoadingView, ErrorView } from "components";
 import { Book } from "types";
 
 const BookListScreen = () => {

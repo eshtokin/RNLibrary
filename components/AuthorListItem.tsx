@@ -3,12 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 import { Author } from "types";
 
-type AuthorListItemProps = {
-  isLabel?: boolean;
+type AuthorListItemProps = Author & {
   onPress?: () => void;
   onDelete: () => void;
   onEdit: () => void;
-} & Author;
+};
 
 const AuthorListItem: FC<AuthorListItemProps> = ({
   id,
@@ -18,31 +17,22 @@ const AuthorListItem: FC<AuthorListItemProps> = ({
   onPress,
   onDelete,
   onEdit,
-  isLabel = false,
-}) => {
-  return (
-    <TouchableOpacity style={styles.row} onPress={onPress} disabled={!onPress}>
-      <Text
-        style={{ fontSize: 16 }}
-      >{`${id} - ${lastName} ${firstName} ${middleName}`}</Text>
-      <View style={styles.actionContainer}>
-        {!isLabel && (
-          <>
-            <TouchableOpacity onPress={onEdit} style={styles.actionIconWrapper}>
-              <EvilIcons name="pencil" size={24} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={onDelete}
-              style={styles.actionIconWrapper}
-            >
-              <EvilIcons name="trash" size={24} color="black" />
-            </TouchableOpacity>
-          </>
-        )}
-      </View>
-    </TouchableOpacity>
-  );
-};
+}) => (
+  <TouchableOpacity style={styles.row} onPress={onPress} disabled={!onPress}>
+    <Text
+      style={styles.text}
+      numberOfLines={1}
+    >{`[${id}] ${lastName} ${firstName} ${middleName}`}</Text>
+    <View style={styles.actionContainer}>
+      <TouchableOpacity onPress={onEdit} style={styles.actionIconWrapper}>
+        <EvilIcons name="pencil" size={24} color="black" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onDelete} style={styles.actionIconWrapper}>
+        <EvilIcons name="trash" size={24} color="black" />
+      </TouchableOpacity>
+    </View>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   row: {
@@ -55,6 +45,10 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   labelText: { fontSize: 20, fontWeight: "500" },
+  text: {
+    fontSize: 16,
+    width: "80%",
+  },
   actionContainer: {
     flexDirection: "row",
     width: 60,
